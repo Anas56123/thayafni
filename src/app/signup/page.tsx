@@ -63,6 +63,7 @@ const SignUpPage = () => {
       phone_number: phoneNumber,
       user_name: username,
       user_avatar_url: avatar,
+      roll: selectedButton,
     };
     console.log(formData);
     insertAccount(formData);
