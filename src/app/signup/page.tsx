@@ -5,6 +5,8 @@ import Image from "next/image";
 import { insertAccount } from "@/Data/INSERT/insertAccount";
 import { useRouter } from "next/navigation";
 import DarkModeBtn from "@/Components/DarkModeBtn";
+import VerifyYourEmail from "@/emails/VerifyYourEmail";
+import { NextResponse } from "next/server";
 
 const SignUpPage = () => {
   const router = useRouter();
@@ -35,7 +37,7 @@ const SignUpPage = () => {
     onDrop,
   });
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     setError("");
     if (password != confirmPassword) {
       setError("The passwords are not the same");
@@ -66,7 +68,7 @@ const SignUpPage = () => {
       roll: selectedButton,
     };
     console.log(formData);
-    insertAccount(formData);
+    // insertAccount(formData);
     localStorage.setItem("email", formData.email);
     setEmail("");
     setPassword("");
@@ -74,7 +76,26 @@ const SignUpPage = () => {
     setPhoneNumber("");
     setUsername("");
     setAvatar("");
-    router.push("/home");
+    setSelectedButton(null);
+    const validationCode = {
+      validationCode:
+        String(Math.floor(Math.random() * 10)) +
+        String(Math.floor(Math.random() * 10)) +
+        String(Math.floor(Math.random() * 10)) +
+        String(Math.floor(Math.random() * 10)) +
+        String(Math.floor(Math.random() * 10)) +
+        String(Math.floor(Math.random() * 10)),
+    };
+    console.log(validationCode);
+    localStorage.setItem('code', validationCode.validationCode)
+    await fetch("/api/email", {
+      method: "POST",
+      body: JSON.stringify({
+        firstName: formData.user_name,
+        email: email,
+        validationCode: validationCode,
+      }),
+    });
   };
 
   return (

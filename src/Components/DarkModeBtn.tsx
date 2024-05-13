@@ -15,10 +15,10 @@ export default function DarkModeBtn({ type }: { type: Type }) {
     }
   }
 
-  console.log(body);
   return (
     <button
       onClick={handleClick}
+      type="button"
       className="mt-4 w-full py-2 bg-gray-500 hover:bg-gray-600 text-white font-semibold rounded"
     >
       {type === "text" ? (
